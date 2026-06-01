@@ -18,7 +18,7 @@ def accueil():
 
 @app.get("/health")
 def health():
-    return {"application": "icgroup-portal", "status": "ok"}, 200
+    return {"application": "flask-portal", "status": "ok"}, 200
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=8080, debug=False)
