@@ -1,0 +1,13 @@
+# Dockerfile à compléter : créez un fichier nommé Dockerfile.
+FROM A_COMPLETER_IMAGE_PYTHON
+WORKDIR A_COMPLETER_DOSSIER
+
+COPY A_COMPLETER_FICHIER_DEPENDANCES .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY A_COMPLETER_PROGRAMME .
+
+ENV ODOO_URL="https://www.odoo.com"
+ENV PGADMIN_URL="https://www.pgadmin.org"
+
+EXPOSE A_COMPLETER_PORT
+CMD ["python", "A_COMPLETER_PROGRAMME"]

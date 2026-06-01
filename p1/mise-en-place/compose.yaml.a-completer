@@ -1,0 +1,60 @@
+# Complétez uniquement le service portal.
+services:
+  portal:
+    build: A_COMPLETER_DOSSIER_APPLICATION
+    image: A_COMPLETER_NOM_IMAGE
+    container_name: flask-portal
+    ports:
+      - "A_COMPLETER_PORT_NAVIGATEUR:A_COMPLETER_PORT_APPLICATION"
+    environment:
+      ODOO_URL: "http://localhost:A_COMPLETER_PORT_ODOO"
+      PGADMIN_URL: "http://localhost:A_COMPLETER_PORT_PGADMIN"
+
+  db:
+    image: postgres:15
+    container_name: portal-db
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  pgadmin:
+    image: dpage/pgadmin4:9.15
+    container_name: portal-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      db:
+        condition: service_healthy
+
+  odoo:
+    image: odoo:18.0
+    container_name: portal-odoo
+    environment:
+      HOST: db
+      USER: ${POSTGRES_USER}
+      PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "8069:8069"
+    volumes:
+      - odoo_data:/var/lib/odoo
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  pgadmin_data:
+  odoo_data:
