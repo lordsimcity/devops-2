@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        PROJECT_DIR = '/workspace/portal'
+    }
+
+    stages {
+        stage('A_COMPLETER_NOM_ETAPE_1') {
+            steps {
+                dir(env.PROJECT_DIR) {
+                    sh 'A_COMPLETER_COMMANDE_BUILD'
+                }
+            }
+        }
+
+        stage('A_COMPLETER_NOM_ETAPE_2') {
+            steps {
+                dir(env.PROJECT_DIR) {
+                    sh 'A_COMPLETER_COMMANDE_DEPLOIEMENT'
+                    sh 'docker compose -p projet-portal ps'
+                }
+            }
+        }
+
+        stage('A_COMPLETER_NOM_ETAPE_3') {
+            steps {
+                dir(env.PROJECT_DIR) {
+                    sh 'chmod +x scripts/ci/tester-services.sh'
+                    sh './scripts/ci/tester-services.sh'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'État final des conteneurs du TP :'
+            dir(env.PROJECT_DIR) {
+                sh 'docker compose -p projet-portal ps || true'
+            }
+        }
+        success {
+            echo 'Pipeline réussi : image construite, services lancés et tests validés.'
+        }
+        failure {
+            echo 'Pipeline en échec : lire la console pour identifier l’étape concernée.'
+        }
+    }
+}
