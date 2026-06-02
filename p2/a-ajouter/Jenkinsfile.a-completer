@@ -26,8 +26,8 @@ pipeline {
         stage('A_COMPLETER_NOM_ETAPE_3') {
             steps {
                 dir(env.PROJECT_DIR) {
-                    sh 'chmod +x scripts/ci/tester-services.sh'
-                    sh './scripts/ci/tester-services.sh'
+                    sh 'DROIT_EXECUTION_SCRIPT'
+                    sh 'SCRIPT_A_EXECUTER'
                 }
             }
         }
