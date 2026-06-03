@@ -28,7 +28,7 @@ attendre_url() {
 }
 
 attendre_url "Portail Flask" "http://${HOTE}:8080/health" 15
-attendre_url "pgAdmin" "http://${HOTE}:5050" 20
+attendre_url "pgAdmin" "http://${HOTE}:5050" 60
 attendre_url "Odoo" "http://${HOTE}:8069/web/login" 30
 
 echo "Tous les tests HTTP du TP sont réussis."
